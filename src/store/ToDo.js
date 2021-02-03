@@ -1,43 +1,46 @@
-class TodoStore {
+import {action, autorun, computed, makeObservable, observable, configure} from 'mobx';
+import { v4 } from 'uuid';
+import {fetchTodos} from '../apis/todoApi';
+
+configure({
+    enforceActions: "never",
+})
+
+export class TodoStore {
+    constructor() {
+      makeObservable(this, {
+        todos: observable,
+        addTodo: action,
+        loadTodos: action,
+        todosAmount: computed,
+        report: computed,
+      });
+      autorun(() => console.log(this.report));
+    }
+
     todos = [];
-  
-    get completedTodosCount() {
-      return this.todos.filter(
-        todo => todo.completed === true
-      ).length;
+
+    get todosAmount() {
+      return this.todos.filter(todo => todo.done === false).length;
     }
   
-    report() {
-      if (this.todos.length === 0)
-        return "<none>";
-      const nextTodo = this.todos.find(todo => todo.completed === false);
-      return `Next todo: "${nextTodo ? nextTodo.task : "<none>"}". ` +
-        `Progress: ${this.completedTodosCount}/${this.todos.length}`;
+    get report() {
+      return `there are ${this.todosAmount} task(s) to be done`;
+    }
+
+    async loadTodos() {
+      const todos = await fetchTodos();
+      todos.forEach((todo) => {
+        this.todos.push(todo);
+      });
     }
   
-    addTodo(task) {
-        this.todos.push({
-        task: task,
-        completed: false,
-        assignee: null
+    addTodo(title) {
+      this.todos.push({
+        id: v4(),
+        title: title,
+        done: false
       });
     }
   }
-  
-const todoStore = new TodoStore();
-
-todoStore.addTodo("read MobX tutorial");
-console.log(todoStore.report());
-
-todoStore.addTodo("try MobX");
-console.log(todoStore.report());
-
-todoStore.todos[0].completed = true;
-console.log(todoStore.report());
-
-todoStore.todos[1].task = "try MobX in own project";
-console.log(todoStore.report());
-
-todoStore.todos[0].task = "grok MobX tutorial";
-console.log(todoStore.report());
                         
