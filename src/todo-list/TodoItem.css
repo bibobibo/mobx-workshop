@@ -1,0 +1,8 @@
+.Todo_span {
+    color: black;
+}
+
+.Todo_span-done {
+    color: grey;
+    text-decoration: line-through;
+}
