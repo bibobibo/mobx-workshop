@@ -7,7 +7,7 @@ export const TodoItem = ({ todo, finish, redo, remove, edit }) => {
     const handleRedo = () => { redo(todo.id); };
     const handleRemove = () => { remove(todo.id); };
     const handleEdit = () => {
-        if (todo.done) {
+        if (!todo.done) {
             edit(todo.id, randomTitle());
         }
     };
