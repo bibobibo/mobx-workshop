@@ -1,3 +1,7 @@
 fileignoreconfig:
 - filename: yarn.lock
   checksum: a72c5f3e614820edef493b8f5f8c2706d7e0da727bdaf1adf88e548c38b95195
+- filename: src/todo-list/TodoList.js
+  checksum: e61f46c49639912cd29900e4821d7a8f45f241571501cddd4aabbff0fca767b5
+- filename: src/store/ToDo.js
+  checksum: fc9a35ea7e4fe2a2296c51210017f798e997a44a0c70e84fdafc11787d434349
